@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Cookie Example</title>
-    <style>
-        #cookie {
-            font-size: 24px;
-            margin-top: 20px;
+    <script>
+        function setCookie(cookiename, cookievalue, expiredays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (expiredays * 24 * 60 * 60 * 1000));
+            var expires = "expires="+d.toUTCString();
+            document.cookie = cookiename + "=" + cookievalue + ";" + expires + ";path=/";
         }
-    </style>
+
+        function getCookie(cookiename) {
+            var name = cookiename + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            var username = getCookie("username");
+            if (username != "") {
+                alert("Welcome back, " + username);
+            } else {
+                username = prompt("Please enter your name:", "");
+                if (username != "" && username != null) {
+                    setCookie("username", username, 365);
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-<h1>Cookie Example</h1>
-<button onclick="setCookie()">Set Cookie</button>
-<div id="cookie"></div>
-
-<script>
-    function setCookie() {
-        document.cookie = "cookieExample=Hello, World!; expires=Thu, 31 Dec 2030 23:59:59 GMT; path=/";
-        document.getElementById("cookie").innerHTML = "Cookie set: " + getCookie("cookieExample");
-    }
-
-    function getCookie(name) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) {
-            return parts.pop().split(";").shift();
-        }
-    }
-
-    window.onload = function() {
-        var cookieValue = getCookie("cookieExample");
-        if (cookieValue) {
-            document.getElementById("cookie").innerHTML = "Cookie found: " + cookieValue;
-        }
-    }
-</script>
+<body onload="checkCookie()">
+<h1>Cookie Time</h1>
+<p>Use the field to store a cookie.</p>
 </body>
 </html>
