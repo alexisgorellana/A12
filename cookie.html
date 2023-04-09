@@ -15,14 +15,15 @@
         function getCookie(cookiename) {
             var name = cookiename + "=";
             var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
+            var splitCookie = decodedCookie.split(';');
+            for(var i = 0; i < splitCookie.length; i++) {
+                var spi = splitCookie[i];
+                while (spi.charAt(0) == ' ') {
+                    spi = spi.substring(1);
                 }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
+
+                if (spi.indexOf(name) == 0) {
+                    return spi.substring(name.length, spi.length);
                 }
             }
             return "";
